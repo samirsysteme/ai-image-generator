@@ -15,28 +15,28 @@ padding:40px;
 }
 
 h1{
-font-size:40px;
+font-size:42px;
 margin-bottom:20px;
 }
 
-.input-box{
+.container{
 margin-top:30px;
 }
 
 input{
 width:60%;
 padding:15px;
-border-radius:10px;
 border:none;
+border-radius:10px;
 font-size:18px;
 outline:none;
 }
 
 button{
-padding:15px 30px;
+padding:15px 35px;
+background:#22c55e;
 border:none;
 border-radius:10px;
-background:#22c55e;
 color:white;
 font-size:18px;
 cursor:pointer;
@@ -57,17 +57,23 @@ img{
 margin-top:40px;
 max-width:700px;
 border-radius:20px;
-box-shadow:0 0 30px rgba(0,0,0,0.7);
+box-shadow:0 0 30px rgba(0,0,0,0.8);
+}
+
+footer{
+margin-top:60px;
+opacity:0.6;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <h1>🤖 AI Image Generator</h1>
 
-<div class="input-box">
+<div class="container">
 
 <input id="prompt" placeholder="اكتب ما تريد رسمه">
 
@@ -77,13 +83,19 @@ box-shadow:0 0 30px rgba(0,0,0,0.7);
 
 <div id="loading">⏳ جاري الرسم...</div>
 
+<br>
+
 <img id="result">
+
+<footer>
+AI Drawing Website
+</footer>
 
 <script>
 
-function draw(){
+async function draw(){
 
-let text = document.getElementById("prompt").value;
+let text=document.getElementById("prompt").value;
 
 if(text===""){
 alert("اكتب وصف الصورة");
@@ -92,21 +104,25 @@ return;
 
 document.getElementById("loading").style.display="block";
 
-let url = "https://image.pollinations.ai/prompt/" 
-+ encodeURIComponent(text) 
-+ "?width=1024&height=1024&seed=" + Date.now();
+let url="https://image.pollinations.ai/prompt/"+encodeURIComponent(text);
 
-let img = document.getElementById("result");
+try{
 
-img.onload = function(){
+let response=await fetch(url);
+
+let blob=await response.blob();
+
+let imgURL=URL.createObjectURL(blob);
+
+document.getElementById("result").src=imgURL;
+
 document.getElementById("loading").style.display="none";
-}
 
-img.onerror = function(){
-document.getElementById("loading").innerText="⚠️ حدث خطأ في تحميل الصورة";
-}
+}catch(error){
 
-img.src = url;
+document.getElementById("loading").innerText="⚠️ فشل تحميل الصورة";
+
+}
 
 }
 
