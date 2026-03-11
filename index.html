@@ -5,9 +5,8 @@
 <title>AI Image Generator</title>
 
 <style>
-
 body{
-background:linear-gradient(135deg,#0f172a,#020617);
+background:#0f172a;
 color:white;
 font-family:Arial;
 text-align:center;
@@ -15,81 +14,53 @@ padding:40px;
 }
 
 h1{
-font-size:42px;
-margin-bottom:20px;
-}
-
-.container{
-margin-top:30px;
+font-size:40px;
 }
 
 input{
 width:60%;
 padding:15px;
-border:none;
 border-radius:10px;
+border:none;
 font-size:18px;
-outline:none;
 }
 
 button{
-padding:15px 35px;
+padding:15px 30px;
 background:#22c55e;
 border:none;
 border-radius:10px;
 color:white;
 font-size:18px;
 cursor:pointer;
-margin-left:10px;
-}
-
-button:hover{
-background:#16a34a;
-}
-
-#loading{
-margin-top:20px;
-display:none;
-font-size:18px;
 }
 
 img{
-margin-top:40px;
-max-width:700px;
+margin-top:30px;
+max-width:600px;
 border-radius:20px;
-box-shadow:0 0 30px rgba(0,0,0,0.8);
 }
 
-footer{
-margin-top:60px;
-opacity:0.6;
+#loading{
+display:none;
+margin-top:20px;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <h1>🤖 AI Image Generator</h1>
 
-<div class="container">
-
-<input id="prompt" placeholder="اكتب ما تريد رسمه">
+<input id="prompt" placeholder="اكتب وصف الصورة">
 
 <button onclick="draw()">ارسم</button>
-
-</div>
 
 <div id="loading">⏳ جاري الرسم...</div>
 
 <br>
 
 <img id="result">
-
-<footer>
-AI Drawing Website
-</footer>
 
 <script>
 
@@ -106,22 +77,10 @@ document.getElementById("loading").style.display="block";
 
 let url="https://image.pollinations.ai/prompt/"+encodeURIComponent(text);
 
-try{
+document.getElementById("result").src=url;
 
-let response=await fetch(url);
-
-let blob=await response.blob();
-
-let imgURL=URL.createObjectURL(blob);
-
-document.getElementById("result").src=imgURL;
-
+document.getElementById("result").onload=function(){
 document.getElementById("loading").style.display="none";
-
-}catch(error){
-
-document.getElementById("loading").innerText="⚠️ فشل تحميل الصورة";
-
 }
 
 }
